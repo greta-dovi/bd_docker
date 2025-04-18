@@ -7,20 +7,25 @@ from sklearn.metrics import accuracy_score, classification_report, ConfusionMatr
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 import pathlib
 
+# Directory for the putput
 results_dir = pathlib.Path("results")
 results_dir.mkdir(exist_ok=True)
 
 nlp = spacy.load("en_core_web_md")
 
+# load data
 raw_data = pd.read_csv("all_kindle_review.csv")
 
 df = raw_data.iloc[:, 4:6]
 
+# recode labels to have binary classification problem
 df.loc[df["rating"] <= 3, "rating"] = 0
 df.loc[df["rating"] > 3, "rating"] = 1
 
+# convert all letters to lower case
 df["reviewText"] = df["reviewText"].str.lower()
 
+# apply regex
 df["reviewText"] = df["reviewText"].apply(lambda x: re.sub(r"(?:(?!\b['‘’]\b)[\W_])+", ' ', x).strip())
 df["reviewText"] = df["reviewText"].apply(lambda x: re.sub(r'[\s+]', ' ', x).strip())
 
