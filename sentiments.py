@@ -1,11 +1,14 @@
 import pandas as pd
 import spacy
 import re
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, ConfusionMatrixDisplay, confusion_matrix
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+import pathlib
+
+results_dir = pathlib.Path("results")
+results_dir.mkdir(exist_ok=True)
 
 nlp = spacy.load("en_core_web_md")
 
@@ -26,7 +29,6 @@ def remove_stop_words(sentence):
     doc = nlp(sentence)
     filtered_tokens = [token for token in doc if not token.is_stop]
     return " ".join([token.text for token in filtered_tokens])
-
 
 
 df["filtered"] = df["reviewText"].apply(remove_stop_words)
@@ -51,15 +53,12 @@ model.fit(xtrain_bow, ytrain)
 
 # Evaluate the model
 y_pred = model.predict(xval_bow)
-accuracy = accuracy_score(yval, y_pred)
-report = classification_report(yval, y_pred)
+accuracy_bow = accuracy_score(yval, y_pred)
+report_bow = classification_report(yval, y_pred)
 conf_mat = confusion_matrix(yval, y_pred)
 cm_display = ConfusionMatrixDisplay(conf_mat, display_labels=[0, 1])
-print("Ratio of positive reviews:", sum(y) / len(y))
-print(accuracy)
-print(report)
-cm_display.plot(cmap="Blues")
-plt.show()
+plot = cm_display.plot(cmap="Blues")
+plot.figure_.savefig('results/bow_confusion.jpg')
 
 
 # TFIDF
@@ -75,12 +74,16 @@ model.fit(xtrain_tfidf, ytrain)
 
 # Evaluate the model
 y_pred = model.predict(xval_tfidf)
-accuracy = accuracy_score(yval, y_pred)
-report = classification_report(yval, y_pred)
+accuracy_tfidf = accuracy_score(yval, y_pred)
+report_tfidf = classification_report(yval, y_pred)
 conf_mat = confusion_matrix(yval, y_pred)
 cm_display = ConfusionMatrixDisplay(conf_mat, display_labels=[0, 1])
-print("Ratio of positive reviews:", sum(y) / len(y))
-print(accuracy)
-print(report)
-cm_display.plot(cmap="Blues")
-plt.show()
+plot = cm_display.plot(cmap="Blues")
+plot.figure_.savefig('results/tfidf_confusion.jpg')
+
+
+# output
+
+with open(results_dir / "results.txt", 'w') as f:
+    f.writelines(["Bag-of-words results:\n", f"Metrics\n: {report_bow}",
+                  "\nTF-IDF results:\n", f"Metrics\n: {report_tfidf}"])
