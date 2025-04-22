@@ -8,13 +8,13 @@ For this project I decided to run a sentiment analysis, since it is closely rela
 Code development for sentiment analysis can be split into the following parts: <br>
 - Data loading and preprocessing (recoding labels, applying regex, removing stop words and lemmatizing)
 - Vectorizing data (creating a numeric text representation (vectors). Used Bag of Words and Term frequency - Inverse Document Frequency methods)
-- Running supervised ML model and daving the results (Used logistic regression model, results were saved as follows: metrics to .txt file, images to .jpg files)
+- Running supervised ML model and saving the results (Used logistic regression model, results were saved as follows: metrics to .txt file, images to .jpg files)
 
 ##### 3. Requirements file
 Requirements file was created using pip freeze > requirements.txt command. 
 
 ##### 4. Write Dockerfile
-Dockerfile was created by specifying all the necessary information, like specifying directory in docker, copying the data and scrip, copying and installing requirements: <br>
+Dockerfile was created by specifying all the necessary information, like directory in docker, copying the data and script, copying and installing libraries from requirements file: <br>
 
 FROM python:3.12 <br>
 WORKDIR /usr/local/app <br><br>
@@ -29,15 +29,13 @@ CMD ["python", "sentiments.py"]
 
 
 ##### 5. Build the Docker image and run the Container
-Build the Docker image: Use the Docker command-line interface to build the Docker image based on the Dockerfile you created in the previous step. Verify that the image builds successfully without any errors.
-
 Docker image was built using command "build .", which finds the Dockerfile in the current directory and creates a Docker image. <br>
 Once the image is created, it appears in docker.desktop app "Images" section. From there I ran the image in the Container. <br>
-In the Optional settings amd Volumes section I indicated the path for the results in my computer as well as in Docker Container. <br>
+In the Optional settings and Volumes section I indicated the path for the results in my computer as well as in Docker Container. <br>
 While Container was running, I was able to see the file structure inside the Docker Container.  
 
 ##### 6. Issues encountered
-There were not many issues in the simple container running process. However, I also wanted to save the generated output file to be saved on the local machine, therefore needed to explore the volumes and mount options. 
+There were not many issues in the container running process. However, I also wanted to save the generated output file on the local machine, therefore needed to explore the volumes and mount options. 
 
 ##### 7. Container registry
 To push my Docker image to a container registry I followed these steps: <br>
