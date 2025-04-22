@@ -33,22 +33,17 @@ Build the Docker image: Use the Docker command-line interface to build the Docke
 
 Docker image was built using command "build .", which finds the Dockerfile in the current directory and creates a Docker image. <br>
 Once the image is created, it appears in docker.desktop app "Images" section. From there I ran the image in the Container. <br>
-mention mount!!!!!!!!!!!!!!!!!!!!!!!! <br>
+In the Optional settings amd Volumes section I indicated the path for the results in my computer as well as in Docker Container. <br>
 While Container was running, I was able to see the file structure inside the Docker Container.  
 
 ##### 6. Issues encountered
-Maybe here mention about the mount
+There were not many issues in the simple container running process. However, I also wanted to save the generated output file to be saved on the local machine, therefore needed to explore the volumes and mount options. 
 
-##### 8.
-Push the Docker image to a container registry. Please create access to a container registry (such as Docker Hub or a private registry), push your Docker image to the registry, and share the tag of this image.
+##### 7. Container registry
+To push my Docker image to a container registry I followed these steps: <br>
+docker login <br>
+docker images and found my latest image <br>
+docker tag b9c75d9245cb (my image) gretadov/sentiment:latest2 (my repository)  <br>
+docker push gretadov/sentiment:latest2 <br>
+link to copy the Docker image from DockerHub: docker pull gretadov/sentiment:latest2 <br>
 
-
-
-
-Python code: Submit the Python code script you developed for your chosen project.
-
-Dockerfile: Provide the Dockerfile that you created to package your Python code into a Docker image.
-
-requirements.txt: Include the requirements.txt file that lists the dependencies required by your Python code.
-
-Report/README: Write a report or README file documenting the steps you followed and any additional information about the process.
